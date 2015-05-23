@@ -1,13 +1,16 @@
 package com.saransh.smartsupper10;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.saransh.smartsupper10.library.UserFunctions;
 import com.saransh.smartsupper10.library.config;
 
 import java.io.IOException;
@@ -18,24 +21,41 @@ public class MainActivity extends ActionBarActivity {
     Context context;
     String regId;
     String msg="";
-    //GoogleCloudMessaging gcm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        try {
-            if (gcm == null) {
-                gcm = GoogleCloudMessaging.getInstance(context);
-            }
-            regId = gcm.register(config.GOOGLE_PROJECT_ID);
-            Log.d("RegisterActivity", "registerInBackground - regId: "
-                    + regId);
-            msg = "Device registered, registration ID=" + regId;
+        new AttemptRegister().execute();
+    }
+    class AttemptRegister extends AsyncTask<String, String, String> {
 
-            //storeRegistrationId(context, regId);
-        } catch (IOException ex) {
-            msg = "Error :" + ex.getMessage();
-            Log.d("RegisterActivity", "Error: " + msg);
+        @Override
+        protected String doInBackground(String... params) {
+            try {
+                if (gcm == null) {
+                    gcm = GoogleCloudMessaging.getInstance(getApplicationContext());
+                }
+                regId = gcm.register(config.GOOGLE_PROJECT_ID);
+                Log.d("RegisterActivity", "registerInBackground - regId: "
+                        + regId);
+                msg = "Device registered, registration ID=" + regId;
+                new UserFunctions().insertGCM(regId);
+                return regId;
+                //storeRegistrationId(context, regId);
+            } catch (IOException ex) {
+                msg = "Error :" + ex.getMessage();
+                Log.d("RegisterActivity", "Error: " + msg);
+            }
+
+            return regId;
+
+        }
+
+        @Override
+        protected void onPostExecute(String params) {
+            Toast.makeText(getApplicationContext(),
+                    params,
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
