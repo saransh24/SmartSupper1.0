@@ -32,6 +32,7 @@ public class UserFunctions {
 	public UserFunctions() {
 		jsonParser = new JSONParser();
 	}
+
     public void insertGCM(String regId){
 
         List<NameValuePair> params = new ArrayList<NameValuePair>();

@@ -10,5 +10,7 @@
     <string name="dish_quantity1">0</string>
     <string name="headline">Today\'s Pick</string>
     <string name="title_activity_chechkout">chechkout</string>
+    <string name="title_activity_thankyou">Thankyou</string>
+    <string name="thankyou">THANK YOU FOR ORDER</string>
 
 </resources>

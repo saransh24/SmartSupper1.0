@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="@drawable/custom_border">>
+        android:background="@drawable/custom_border">
 
         <TextView
             android:layout_width="match_parent"
@@ -29,9 +29,6 @@
             android:gravity="center"
             android:text="@string/tagline"/>
         </LinearLayout>
-
-
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -43,7 +40,6 @@
             android:text="Today's Pick"
             android:layout_gravity="center"/>
         </LinearLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -58,7 +54,71 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/cholle"/>
+                    android:src="@drawable/cholle"
+                    android:id="@+id/pic_dish1"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="1">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Veg MealBox"
+                            android:id="@+id/name_dish1"
+                            android:textSize="20dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="15dp"
+                            android:text="75"
+                            android:textSize="20dp"
+                            android:id="@+id/rate_dish1"/>
+                        </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="-"
+                        android:clickable="true"
+                        android:gravity="center"
+                        android:background="@drawable/custom_border_button"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:id="@+id/sub1"
+                        android:onClick="b_sub1"
+                         />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        android:textStyle="bold"
+                        android:textSize="25dp"
+                        android:id="@+id/count_dish1"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="+"
+                        android:clickable="true"
+                        android:background="@drawable/custom_border_button"
+                        android:layout_marginLeft="25dp"
+                        android:layout_marginRight="25dp"
+                        android:id="@+id/add1"
+                        android:onClick="b_add1"/>
+                    </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/cholle"
+                    android:id="@+id/pic_dish2"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -71,35 +131,65 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Veg MealBox"
-                            android:textSize="20dp"/>
+                            android:textSize="20dp"
+                            android:id="@+id/name_dish2"/>
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="15dp"
-                            android:text="Rs 75/-"
-                            android:textSize="20dp"/>
-                        </LinearLayout>
-                    <Button
-                        android:layout_width="34dp"
-                        android:layout_height="wrap_content"
-                        android:text="-"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"/>
-                    <TextView
+                            android:text="75"
+                            android:textSize="20dp"
+                            android:id="@+id/rate_dish2"/>
+                    </LinearLayout>
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
-                        android:textStyle="bold"
-                        android:textSize="25dp"
-                       />
-                    <Button
-                        android:layout_width="34dp"
-                        android:layout_height="wrap_content"
-                        android:text="+"
-                        android:layout_marginLeft="25dp"
-                        android:layout_marginRight="25dp"/>
-                    </LinearLayout>
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:clickable="true"
+                            android:background="@drawable/custom_border_button"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:id="@+id/sub2"
+                            android:onClick="b_sub2"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:textSize="25dp"
+                            android:id="@+id/count_dish2"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="+"
+                            android:clickable="true"
+                            android:background="@drawable/custom_border_button"
+                            android:layout_marginLeft="25dp"
+                            android:layout_marginRight="25dp"
+                            android:id="@+id/add2"
+                            android:onClick="b_add2"/>
+                        </LinearLayout>
+
                 </LinearLayout>
+
+
+                </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:id="@+id/checkout"
+                android:onClick="b_checkout"
+                android:text="CheckOut"
+                android:clickable="true"
+                android:background="@drawable/custom_border"/>
 
             </LinearLayout>
 

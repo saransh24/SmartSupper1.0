@@ -1,12 +1,15 @@
 package com.saransh.smartsupper10;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
@@ -21,6 +24,8 @@ public class MainActivity extends ActionBarActivity {
     Context context;
     String regId;
     String msg="";
+    public final static String EXTRA_MESSAGE = "com.saransh.myapplication.MESSAGE";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +63,47 @@ public class MainActivity extends ActionBarActivity {
                     Toast.LENGTH_SHORT).show();
         }
     }
-
+    public void b_add1(View view)
+    {
+        TextView textView = (TextView)findViewById(R.id.count_dish1);
+        int n = Integer.parseInt(String.valueOf(textView.getText()));
+        textView.setText(String.valueOf(n+1));
+    }
+    public void b_add2(View view)
+    {
+        TextView textView = (TextView)findViewById(R.id.count_dish2);
+        int n = Integer.parseInt(String.valueOf(textView.getText()));
+        textView.setText(String.valueOf(n+1));
+    }
+    public void b_sub1(View view)
+    {
+        TextView textView = (TextView)findViewById(R.id.count_dish1);
+        int n = Integer.parseInt(String.valueOf(textView.getText()));
+        if(n>0)
+        textView.setText(String.valueOf(n-1));
+    }
+    public void b_sub2(View view)
+    {
+        TextView textView = (TextView)findViewById(R.id.count_dish2);
+        int n = Integer.parseInt(String.valueOf(textView.getText()));
+        if(n>0)
+        textView.setText(String.valueOf(n-1));
+    }
+    public void b_checkout(View view)
+    {
+        TextView textView = (TextView)findViewById(R.id.count_dish1);
+        int n1 = Integer.parseInt(String.valueOf(textView.getText()));
+        textView = (TextView)findViewById(R.id.count_dish2);
+        int n2 = Integer.parseInt(String.valueOf(textView.getText()));
+        textView = (TextView)findViewById(R.id.rate_dish1);
+        int rate1 = Integer.parseInt(String.valueOf(textView.getText()));
+        textView = (TextView)findViewById(R.id.rate_dish2);
+        int rate2 = Integer.parseInt(String.valueOf(textView.getText()));
+        int cost = n1*rate1 + n2*rate2;
+        Intent intent =new Intent(getApplicationContext(),checkout.class);
+        intent.putExtra(EXTRA_MESSAGE,String.valueOf(cost));
+        startActivity(intent);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
