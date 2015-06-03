@@ -12,5 +12,8 @@
     <string name="title_activity_chechkout">chechkout</string>
     <string name="title_activity_thankyou">Thankyou</string>
     <string name="thankyou">THANK YOU FOR ORDER</string>
+    <string name="phone_num">8860812994</string>
+    <string name="title_activity_main_activity2">MainActivity2</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
 
 </resources>

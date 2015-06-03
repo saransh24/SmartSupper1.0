@@ -1,15 +1,19 @@
 package com.saransh.smartsupper10;
 
+import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.saransh.smartsupper10.library.DatabaseHandler;
 
-public class checkout extends ActionBarActivity {
+import java.util.HashMap;
+
+
+public class checkout extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,8 +21,22 @@ public class checkout extends ActionBarActivity {
         setContentView(R.layout.activity_checkout);
         Intent intent = getIntent();
         intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
-        TextView textView = (TextView)findViewById(R.id.cost);
+        TextView textView = (TextView)findViewById(R.id.total);
         textView.setText(intent.getStringExtra(MainActivity.EXTRA_MESSAGE));
+        TextView t1 = (TextView) findViewById(R.id.contactno);
+        TextView t2 = (TextView) findViewById(R.id.address);
+        DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+        int count = db.getRowCount();
+
+        if(count > 0) {
+
+            HashMap<String, String> details= db.getUserDetails();
+            t1.setText(details.get("contact"));
+            t1.setText(details.get("address"));
+        }
+
+
+        db.close();
     }
 
     public void b_confirm(View view)

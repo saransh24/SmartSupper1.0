@@ -1,5 +1,6 @@
 package com.saransh.smartsupper10;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,6 +10,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +25,7 @@ import com.saransh.smartsupper10.library.config;
 import java.io.IOException;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
     GoogleCloudMessaging gcm;
     Context context;
     String regId;
@@ -29,6 +35,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
         new AttemptRegister().execute();
     }
@@ -65,52 +74,112 @@ public class MainActivity extends ActionBarActivity {
     }
     public void b_add1(View view)
     {
-        TextView textView = (TextView)findViewById(R.id.count_dish1);
-        int n = Integer.parseInt(String.valueOf(textView.getText()));
-        textView.setText(String.valueOf(n+1));
+        TextView textView1 = (TextView)findViewById(R.id.count_dish1);
+        TextView textView2 = (TextView)findViewById(R.id.rate_dish1);
+        TextView textView3 = (TextView)findViewById(R.id.total);
+
+        int n = Integer.parseInt(String.valueOf(textView1.getText()));
+        int rate = Integer.parseInt(String.valueOf(textView2.getText()));
+        int total = rate+Integer.parseInt(String.valueOf(textView3.getText()));
+
+        textView1.setText(String.valueOf(n+1));
+        textView3.setText(String.valueOf(total));
+
     }
     public void b_add2(View view)
     {
-        TextView textView = (TextView)findViewById(R.id.count_dish2);
-        int n = Integer.parseInt(String.valueOf(textView.getText()));
-        textView.setText(String.valueOf(n+1));
+
+        TextView textView1 = (TextView)findViewById(R.id.count_dish2);
+        TextView textView2 = (TextView)findViewById(R.id.rate_dish2);
+        TextView textView3 = (TextView)findViewById(R.id.total);
+
+        int n = Integer.parseInt(String.valueOf(textView1.getText()));
+        int rate = Integer.parseInt(String.valueOf(textView2.getText()));
+        int total = rate+Integer.parseInt(String.valueOf(textView3.getText()));
+
+        textView1.setText(String.valueOf(n+1));
+        textView3.setText(String.valueOf(total));
     }
     public void b_sub1(View view)
     {
-        TextView textView = (TextView)findViewById(R.id.count_dish1);
-        int n = Integer.parseInt(String.valueOf(textView.getText()));
-        if(n>0)
-        textView.setText(String.valueOf(n-1));
+        TextView textView1 = (TextView)findViewById(R.id.count_dish1);
+        TextView textView2 = (TextView)findViewById(R.id.rate_dish1);
+        TextView textView3 = (TextView)findViewById(R.id.total);
+
+        int rate = Integer.parseInt(String.valueOf(textView2.getText()));
+        int total = Integer.parseInt(String.valueOf(textView3.getText()));
+
+        int n = Integer.parseInt(String.valueOf(textView1.getText()));
+        if(n>0) {
+            textView1.setText(String.valueOf(n - 1));
+            if (total > 0)
+                textView3.setText(String.valueOf(total - rate));
+        }
+
     }
     public void b_sub2(View view)
     {
-        TextView textView = (TextView)findViewById(R.id.count_dish2);
-        int n = Integer.parseInt(String.valueOf(textView.getText()));
-        if(n>0)
-        textView.setText(String.valueOf(n-1));
+
+        TextView textView1 = (TextView)findViewById(R.id.count_dish2);
+        TextView textView2 = (TextView)findViewById(R.id.rate_dish2);
+        TextView textView3 = (TextView)findViewById(R.id.total);
+
+        int rate = Integer.parseInt(String.valueOf(textView2.getText()));
+        int total = Integer.parseInt(String.valueOf(textView3.getText()));
+
+        int n = Integer.parseInt(String.valueOf(textView1.getText()));
+        if(n>0) {
+            textView1.setText(String.valueOf(n - 1));
+            if(total>0)
+                textView3.setText(String.valueOf(total-rate));
+        }
+
     }
-    public void b_checkout(View view)
+    public void b_order(View view)
     {
-        TextView textView = (TextView)findViewById(R.id.count_dish1);
-        int n1 = Integer.parseInt(String.valueOf(textView.getText()));
-        textView = (TextView)findViewById(R.id.count_dish2);
-        int n2 = Integer.parseInt(String.valueOf(textView.getText()));
-        textView = (TextView)findViewById(R.id.rate_dish1);
-        int rate1 = Integer.parseInt(String.valueOf(textView.getText()));
-        textView = (TextView)findViewById(R.id.rate_dish2);
-        int rate2 = Integer.parseInt(String.valueOf(textView.getText()));
-        int cost = n1*rate1 + n2*rate2;
+        TextView textView3 = (TextView)findViewById(R.id.total);
+        int total = Integer.parseInt(String.valueOf(textView3.getText()));
         Intent intent =new Intent(getApplicationContext(),checkout.class);
-        intent.putExtra(EXTRA_MESSAGE,String.valueOf(cost));
+        intent.putExtra(EXTRA_MESSAGE,String.valueOf(total));
         startActivity(intent);
     }
-
-    @Override
+    public void picClick1(View view)
+    {
+        final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        final Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        final ImageView image = (ImageView)findViewById(R.id.pic_dish1);
+        TextView textView = (TextView)findViewById(R.id.food_desc1);
+        int visiblity = textView.getVisibility();
+        if(visiblity == view.GONE) {
+            textView.setVisibility(View.VISIBLE);
+            image.startAnimation(animationFadeIn);
+        }
+        if(visiblity == view.VISIBLE) {
+            textView.setVisibility(View.GONE);
+            image.startAnimation(animationFadeOut);
+        }
+    }
+    public void picClick2(View view)
+    { final Animation animationFadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        final Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+        final ImageView image = (ImageView)findViewById(R.id.pic_dish2);
+        TextView textView = (TextView)findViewById(R.id.food_desc2);
+        int visiblity = textView.getVisibility();
+        if(visiblity == view.GONE) {
+            textView.setVisibility(View.VISIBLE);
+            image.startAnimation(animationFadeIn);
+        }
+        if(visiblity == view.VISIBLE) {
+            textView.setVisibility(View.GONE);
+            image.startAnimation(animationFadeOut);
+        }
+    }
+/*    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
