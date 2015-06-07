@@ -16,24 +16,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:background="#ff1c1c23"
-        android:id="@+id/header">
-
-        <TextView
+        android:background="#ff1c1c23">
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="40dp"
-            android:gravity="center"
-            android:textColor="#3e9608"
-            android:text="@string/app_name"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="15dp"
-            android:textStyle="italic"
-            android:gravity="center"
-            android:text="@string/tagline"/>
-
+            android:layout_height="80dp"
+            android:src="@drawable/app_name"/>
     </LinearLayout>
 
     <LinearLayout
@@ -44,71 +31,75 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total"
+                android:layout_alignParentLeft="true"
+                android:textSize="25dp"
+                android:textColor="#000"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="Rs."
+                android:textSize="25dp"
+                android:textColor="#000"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0"
+                android:id="@+id/total"
+                android:textSize="25dp"
+                android:textColor="#000"
+                />
+        </LinearLayout>
+
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="phone"
-            android:hint="phone"
-            android:ems="10"
-            android:textSize="35dp"
+            android:hint="Name"
+            android:ems="15"
+            android:layout_marginTop="15dp"
+            android:textSize="20dp"
+            android:id="@+id/name"
+            />
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:hint="Phone No."
+            android:ems="15"
+            android:textSize="20dp"
             android:id="@+id/contactno"
             />
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPostalAddress"
-            android:ems="10"
-            android:hint="address"
-            android:textSize="35dp"
+            android:ems="15"
+            android:hint="Address"
+            android:textSize="20dp"
             android:id="@+id/address"
             />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="0dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:background="#ff1c1c23"
-        android:layout_marginBottom="0dp">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Total"
-            android:layout_alignParentLeft="true"
-            android:textSize="30dp"
-            android:textColor="#ffffff"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:text="Rs."
-            android:textSize="30dp"
-            android:textColor="#ffffff"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="0"
-            android:id="@+id/total"
-            android:textSize="30dp"
-            android:textColor="#ffffff"/>
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            />
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Order!"
-            android:padding="0dp"
+            android:text="Confirm!"
+            android:layout_marginTop="15dp"
+            android:padding="15dp"
             android:clickable="true"
             android:onClick="b_order"
             android:layout_alignParentRight="true"
             android:textColor="#ffffff"
-            android:textSize="30dp"
+            android:textSize="15dp"
             android:background="#3e9608"/>
     </LinearLayout>
 

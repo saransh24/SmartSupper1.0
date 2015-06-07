@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.HashMap;
 
@@ -26,7 +27,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_REGISTER + "("
                 + KEY_Contact + " INTEGER PRIMARY KEY,"
-                + KEY_Address + " TEXT,"
+                + KEY_Address + " TEXT"
                 + ")";
         db.execSQL(CREATE_LOGIN_TABLE);
     }
@@ -57,10 +58,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         cursor.moveToFirst();
         if(cursor.getCount() > 0){
-            user.put("contact", cursor.getString(1));
-            user.put("address", cursor.getString(2));
-
+            user.put("contact", cursor.getString(0));
+            user.put("address", cursor.getString(1));
         }
+        Log.d("contact",cursor.getString(0));
+        Log.d("address",cursor.getString(1));
         cursor.close();
         db.close();
 

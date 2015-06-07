@@ -1,15 +1,17 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="0dp"
-    tools:context="com.saransh.smartsupper10.SplashScreen">
+    tools:context="com.saransh.smartsupper10.SplashScreen"
+    android:background="#1c1c23"
+    android:orientation="vertical">
 
-   <ImageView
-       android:layout_width="match_parent"
-       android:padding="-15dp"
-       android:layout_height="match_parent"
-       android:layout_centerInParent="true"
-       android:src="@drawable/splash_screen"/>
-</RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/splash_screen"
+            />
+</LinearLayout>
+

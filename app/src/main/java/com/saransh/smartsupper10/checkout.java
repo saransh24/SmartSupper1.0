@@ -32,15 +32,24 @@ public class checkout extends Activity {
 
             HashMap<String, String> details= db.getUserDetails();
             t1.setText(details.get("contact"));
-            t1.setText(details.get("address"));
+            t2.setText(details.get("address"));
         }
-
-
         db.close();
     }
 
-    public void b_confirm(View view)
+    public void b_order(View view)
     {
+        DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+        int count = db.getRowCount();
+        if(count>0)
+        {
+            db.resetTable_Register();
+        }
+        TextView t1 = (TextView) findViewById(R.id.contactno);
+        TextView t2 = (TextView) findViewById(R.id.address);
+        String contact = String.valueOf(t1.getText());
+        String address = String.valueOf(t2.getText());
+        db.addUser(contact,address);
         Intent intent = new Intent(this,Thankyou.class);
         startActivity(intent);
     }
