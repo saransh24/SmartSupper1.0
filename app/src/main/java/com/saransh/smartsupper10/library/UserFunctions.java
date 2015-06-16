@@ -23,7 +23,7 @@ public class UserFunctions {
     private static String noticesURL = "http://10.0.2.2/vnb/android/get_data.php";*/
     private static String insertURL = "http://10.0.2.2/smartsupper/insert_gcm.php";
     private static String loginURL = "http://dcetech.com/sagnik/vnb/android/user_activity.php";
-    private static String registerURL = "http://dcetech.com/sagnik/vnb/android/user_activity.php";
+    private static String registerURL = "ec2-52-26-3-72.us-west-2.compute.amazonaws.com/smartsupper/register.php";
     private static String noticesURL = "http://dcetech.com/sagnik/vnb/android/get_data.php";
 
     private static String login_tag = "login";
@@ -54,23 +54,13 @@ public class UserFunctions {
         }
 
     }
-	public JSONObject loginUser(String name, String contact){
-
-		List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("name", name));
-        params.add(new BasicNameValuePair("contact", contact));
-        JSONObject json = jsonParser.getJSONFromUrl(loginURL, params);
-
-        return json;
-    }
 
 	public JSONObject registerUser(String name, String contact, String address){
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("tag", register_tag));
-        params.add(new BasicNameValuePair("name", name));
-        params.add(new BasicNameValuePair("email", contact));
-        params.add(new BasicNameValuePair("address", address));
+        params.add(new BasicNameValuePair("Name", name));
+        params.add(new BasicNameValuePair("Contact", contact));
+        params.add(new BasicNameValuePair("Address", address));
         JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
         return json;
     }
