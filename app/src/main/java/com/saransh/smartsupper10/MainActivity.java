@@ -13,6 +13,7 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -79,6 +80,13 @@ public class MainActivity extends Activity {
         TextView textView1 = (TextView)findViewById(R.id.count_dish1);
         TextView textView2 = (TextView)findViewById(R.id.rate_dish1);
         TextView textView3 = (TextView)findViewById(R.id.total);
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.total_panel);
+        int visiblity = linearLayout.getVisibility();
+
+        if(visiblity==View.GONE)
+        {
+            linearLayout.setVisibility(View.VISIBLE);
+        }
 
         int n = Integer.parseInt(String.valueOf(textView1.getText()));
         int rate = Integer.parseInt(String.valueOf(textView2.getText()));
@@ -94,7 +102,13 @@ public class MainActivity extends Activity {
         TextView textView1 = (TextView)findViewById(R.id.count_dish2);
         TextView textView2 = (TextView)findViewById(R.id.rate_dish2);
         TextView textView3 = (TextView)findViewById(R.id.total);
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.total_panel);
+        int visiblity = linearLayout.getVisibility();
 
+        if(visiblity==View.GONE)
+        {
+            linearLayout.setVisibility(View.VISIBLE);
+        }
         int n = Integer.parseInt(String.valueOf(textView1.getText()));
         int rate = Integer.parseInt(String.valueOf(textView2.getText()));
         int total = rate+Integer.parseInt(String.valueOf(textView3.getText()));
@@ -151,14 +165,18 @@ public class MainActivity extends Activity {
         final Animation animationFadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
         final ImageView image = (ImageView)findViewById(R.id.pic_dish1);
         TextView textView = (TextView)findViewById(R.id.food_desc1);
+
         int visiblity = textView.getVisibility();
-        if(visiblity == view.GONE) {
-            textView.setVisibility(View.VISIBLE);
-            image.startAnimation(animationFadeIn);
-        }
         if(visiblity == view.VISIBLE) {
             textView.setVisibility(View.GONE);
             image.startAnimation(animationFadeOut);
+            animationFadeOut.setFillAfter(true);
+
+        }
+        else if(visiblity == view.GONE) {
+            textView.setVisibility(View.VISIBLE);
+            image.startAnimation(animationFadeIn);
+            animationFadeIn.setFillAfter(true);
         }
     }
     public void picClick2(View view)
@@ -167,13 +185,15 @@ public class MainActivity extends Activity {
         final ImageView image = (ImageView)findViewById(R.id.pic_dish2);
         TextView textView = (TextView)findViewById(R.id.food_desc2);
         int visiblity = textView.getVisibility();
-        if(visiblity == view.GONE) {
-            textView.setVisibility(View.VISIBLE);
-            image.startAnimation(animationFadeIn);
-        }
         if(visiblity == view.VISIBLE) {
             textView.setVisibility(View.GONE);
             image.startAnimation(animationFadeOut);
+            animationFadeOut.setFillAfter(true);
+        }
+        else if(visiblity == view.GONE) {
+            textView.setVisibility(View.VISIBLE);
+            image.startAnimation(animationFadeIn);
+            animationFadeIn.setFillAfter(true);
         }
     }
 /*    @Override

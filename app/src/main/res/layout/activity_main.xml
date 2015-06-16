@@ -255,6 +255,8 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:background="#ff1c1c23"
+        android:visibility="gone"
+        android:id="@+id/total_panel"
         >
         <TextView
             android:layout_width="wrap_content"

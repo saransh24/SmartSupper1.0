@@ -59,16 +59,16 @@ public class GCMNotificationIntentService extends IntentService {
 
                 String name = extras.getString("food_name");
                 String desc = extras.getString("desc");
-                String type = extras.getString("type");
+                String rate = extras.getString("rate");
 
-                sendNotification(name, desc, type);
+                sendNotification(name, desc, rate);
                 Log.i(TAG, "Received: " + extras.toString());
             }
         }
         GcmBroadcastReceiver.completeWakefulIntent(intent);
     }
 
-       private void sendNotification(String name, String desc, String type) {
+       private void sendNotification(String name, String desc, String rate) {
         Log.d(TAG, "Preparing to send notification...: " + name);
         mNotificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -83,7 +83,7 @@ public class GCMNotificationIntentService extends IntentService {
         long[] vibrate = { 0, 100, 200, 300 };
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                this).setSmallIcon(R.drawable.ic_launcher)
+                this).setSmallIcon(R.drawable.logo)
                 .setContentTitle(name)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(desc))
                 .setContentText(desc)

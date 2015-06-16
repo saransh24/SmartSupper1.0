@@ -14,7 +14,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 	private static final int DATABASE_VERSION = 2;
 	private static final String DATABASE_NAME = "smartsupper";
  	private static final String TABLE_REGISTER = "register";
- 
+
+    private static final String KEY_Name = "name";
     private static final String KEY_Contact = "contact";
     private static final String KEY_Address = "address";
 
@@ -26,6 +27,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_LOGIN_TABLE = "CREATE TABLE " + TABLE_REGISTER + "("
+                + KEY_Name + " TEXT,"
                 + KEY_Contact + " INTEGER PRIMARY KEY,"
                 + KEY_Address + " TEXT"
                 + ")";
@@ -39,17 +41,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
  
-    public void addUser(String contact, String address) {
+    public void addUser(String name, String contact, String address) {
         SQLiteDatabase db = this.getWritableDatabase();
  
         ContentValues values = new ContentValues();
+        values.put(KEY_Name, name);
         values.put(KEY_Contact, contact);
         values.put(KEY_Address, address);
  
         db.insert(TABLE_REGISTER, null, values);
         db.close();
     }
-    public HashMap<String, String> getUserDetails(){
+    public HashMap<String,String> getUserDetails(){
         HashMap<String,String> user = new HashMap<String,String>();
         String selectQuery = "SELECT  * FROM " + TABLE_REGISTER;
 
@@ -86,11 +89,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.delete(TABLE_REGISTER, null, null);
         db.close();
     }
-    
-    public void resetTable_Notices() {
-    	SQLiteDatabase db = this.getWritableDatabase();
-    	
-    	db.delete(TABLE_REGISTER, null, null);
-    	db.close();
+
+    public void resetTable_Login(){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete(TABLE_REGISTER, null, null);
+        db.close();
     }
 }
