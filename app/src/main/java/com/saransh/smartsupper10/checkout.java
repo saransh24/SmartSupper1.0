@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,29 +17,18 @@ import android.widget.Toast;
 import com.saransh.smartsupper10.library.DatabaseHandler;
 import com.saransh.smartsupper10.library.UserFunctions;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 
 
 public class checkout extends Activity {
 
-    TextView name = (TextView) findViewById(R.id.name);
-    TextView contact = (TextView) findViewById(R.id.contactno);
-    TextView address = (TextView) findViewById(R.id.address);
+    TextView name;
+    TextView contact;
+    TextView address;
 
     Context context;
-    String regId;
-    public static final String REG_ID = "regId";
-    //private static final String APP_VERSION = "appVersion";
 
-    static final String TAG = "Register Activity";
-
-    private static String KEY_SUCCESS = "success";
-    private static String KEY_NAME = "name";
-    private static String KEY_Contact = "email";
-    private static String KEY_Address = "year";
+    DatabaseHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,14 +38,13 @@ public class checkout extends Activity {
         intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         TextView textView = (TextView)findViewById(R.id.total);
         textView.setText(intent.getStringExtra(MainActivity.EXTRA_MESSAGE));
-        name = (TextView) findViewById(R.id.name);
+        name = (TextView) findViewById(R.id.Name);
         contact = (TextView) findViewById(R.id.contactno);
         address = (TextView) findViewById(R.id.address);
-        DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+        db = new DatabaseHandler(getApplicationContext());
         int count = db.getRowCount();
 
         if(count > 0) {
-
             HashMap<String, String> details= db.getUserDetails();
             name.setText(details.get("name"));
             contact.setText(details.get("contact"));
@@ -66,7 +55,6 @@ public class checkout extends Activity {
 
     public void b_order(View view)
     {
-        DatabaseHandler db = new DatabaseHandler(getApplicationContext());
         int count = db.getRowCount();
         if(count>0)
         {
@@ -83,6 +71,9 @@ public class checkout extends Activity {
         } else {
             new AttemptRegister().execute();
         }
+        context = getApplicationContext();
+        Intent intent = new Intent(context,Thankyou.class);
+        startActivity(intent);
 
     }
     class AttemptRegister extends AsyncTask<String, String, String> {
@@ -97,31 +88,17 @@ public class checkout extends Activity {
             UserFunctions userFunction = new UserFunctions();
 
             String msg = "";
-            context = getApplicationContext();
-            JSONObject json = userFunction.registerUser(Name,Contact ,Address);
 
+            String k = userFunction.registerUser(Name,Contact ,Address);
+            Log.d("Pagal",k);
             try {
-                if (json.getString(KEY_SUCCESS) != null) {
-                    //registerErrorMsg.setText("");
-                    String res = json.getString(KEY_SUCCESS);
-                    if (Integer.parseInt(res) == 1) {
-                        DatabaseHandler db = new DatabaseHandler(getApplicationContext());
-                        JSONObject json_user = json.getJSONObject("user");
-
-                        userFunction.logoutUser(getApplicationContext());
-                        db.addUser(json_user.getString(KEY_NAME), json_user.getString(KEY_Contact), json_user.getString(KEY_Address));
-                        db.close();
-                        Intent intent = new Intent(context,Thankyou.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        //registerErrorMsg.setText("Error Occurred During Registration");
-                    }
-                }
-            } catch (JSONException e) {
+                DatabaseHandler db = new DatabaseHandler(getApplicationContext());
+                userFunction.logoutUser(getApplicationContext());
+                db.addUser(Name,Contact,Address);
+                db.close();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-
             return null;
 
         }

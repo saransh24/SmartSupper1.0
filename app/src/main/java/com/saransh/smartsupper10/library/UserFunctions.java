@@ -7,7 +7,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -55,13 +54,13 @@ public class UserFunctions {
 
     }
 
-	public JSONObject registerUser(String name, String contact, String address){
+	public String registerUser(String name, String contact, String address){
 
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("Name", name));
         params.add(new BasicNameValuePair("Contact", contact));
         params.add(new BasicNameValuePair("Address", address));
-        JSONObject json = jsonParser.getJSONFromUrl(registerURL, params);
+        String json = String.valueOf(jsonParser.getJSONFromUrl(registerURL, params));
         return json;
     }
 

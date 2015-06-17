@@ -64,12 +64,12 @@
         <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="phone"
+            android:inputType="text"
             android:hint="Name"
             android:ems="15"
             android:layout_marginTop="15dp"
             android:textSize="20dp"
-            android:id="@+id/name"
+            android:id="@+id/Name"
             />
         <EditText
             android:layout_width="wrap_content"
