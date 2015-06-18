@@ -52,6 +52,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        setContentView(R.layout.activity_main);
 
         food_desc1 = (TextView)findViewById(R.id.food_desc1);
         food_desc2 = (TextView)findViewById(R.id.food_desc2);
@@ -61,10 +62,6 @@ public class MainActivity extends Activity {
 
         foodName1 = (TextView)findViewById(R.id.name_dish1);
         foodName2 = (TextView)findViewById(R.id.name_dish2);
-
-
-        setContentView(R.layout.activity_main);
-
         new SetData().execute();
         new AttemptRegister().execute();
 
