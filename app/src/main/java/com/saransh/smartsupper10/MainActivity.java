@@ -46,41 +46,58 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.activity_main);
 
-        UserFunctions user = new UserFunctions();
-        JSONObject jsonObject = user.getfoodDetails(getApplicationContext());
-        String foodDetails [][]= new String[2][4];
-        foodDetails=getdata(jsonObject);
-
-        TextView food_desc1 = (TextView)findViewById(R.id.food_desc1);
-        TextView food_desc2 = (TextView)findViewById(R.id.food_desc2);
-
-        TextView rate1 = (TextView)findViewById(R.id.rate_dish1);
-        TextView rate2 = (TextView)findViewById(R.id.rate_dish2);
-
-        TextView foodName1 = (TextView)findViewById(R.id.name_dish1);
-        TextView foodName2 = (TextView)findViewById(R.id.name_dish2);
-
-        food_desc1.setText(foodDetails[0][3]);
-        food_desc2.setText(foodDetails[1][3]);
-
-        rate1.setText(foodDetails[0][2]);
-        rate2.setText(foodDetails[1][2]);
-
-        foodName1.setText(foodDetails[0][0]);
-        foodName2.setText(foodDetails[1][0]);
-
-        new SetData((ImageView) findViewById(R.id.pic_dish1))
-                .execute(foodDetails[0][0]);
-        new SetData((ImageView) findViewById(R.id.pic_dish1))
-                .execute(foodDetails[1][1]);
-
+        new SetData().execute();
         new AttemptRegister().execute();
 
     }
-    private class SetData extends AsyncTask<String, Void, Bitmap> {
+    class SetData extends AsyncTask<String, String, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+
+            UserFunctions user = new UserFunctions();
+            JSONObject jsonObject = user.getfoodDetails(getApplicationContext());
+            String [][]foodDetails = new String[2][4];
+
+            foodDetails=getdata(jsonObject);
+
+            TextView food_desc1 = (TextView)findViewById(R.id.food_desc1);
+            TextView food_desc2 = (TextView)findViewById(R.id.food_desc2);
+
+            TextView rate1 = (TextView)findViewById(R.id.rate_dish1);
+            TextView rate2 = (TextView)findViewById(R.id.rate_dish2);
+
+            TextView foodName1 = (TextView)findViewById(R.id.name_dish1);
+            TextView foodName2 = (TextView)findViewById(R.id.name_dish2);
+
+            food_desc1.setText(foodDetails[0][3]);
+            food_desc2.setText(foodDetails[1][3]);
+
+            rate1.setText(foodDetails[0][2]);
+            rate2.setText(foodDetails[1][2]);
+
+            foodName1.setText(foodDetails[0][0]);
+            foodName2.setText(foodDetails[1][0]);
+
+            new DownloadImageTask((ImageView) findViewById(R.id.pic_dish1))
+                    .execute(foodDetails[0][0]);
+            new DownloadImageTask((ImageView) findViewById(R.id.pic_dish1))
+                    .execute(foodDetails[1][1]);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String params) {
+            Toast.makeText(getApplicationContext(),
+                    params,
+                    Toast.LENGTH_SHORT).show();
+        }
+    }
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
-        public SetData(ImageView bmImage) {
+        public DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;
         }
 
@@ -100,28 +117,6 @@ public class MainActivity extends Activity {
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
-    }
-
-    String [][] getdata(JSONObject jsonObject)
-    {
-        try {
-            String Data[][] = new String[2][4];
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for(int i=0;i<2;i++)
-            {
-                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                Data[i][0] = jsonObject1.getString("foodName");
-                Data[i][1] = jsonObject1.getString("picLink'");
-                Data[i][2] = jsonObject1.getString("Rate");
-                Data[i][3] = jsonObject1.getString("foodDesc");
-            }
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
     }
     class AttemptRegister extends AsyncTask<String, String, String> {
 
@@ -154,6 +149,28 @@ public class MainActivity extends Activity {
                     Toast.LENGTH_SHORT).show();
         }
     }
+    String [][] getdata(JSONObject jsonObject)
+    {
+        try {
+            String Data[][] = new String[2][4];
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for(int i=0;i<2;i++)
+            {
+                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                Data[i][0] = jsonObject1.getString("foodName");
+                Data[i][1] = jsonObject1.getString("picLink'");
+                Data[i][2] = jsonObject1.getString("Rate");
+                Data[i][3] = jsonObject1.getString("foodDesc");
+            }
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public void b_add1(View view)
     {
         TextView textView1 = (TextView)findViewById(R.id.count_dish1);
