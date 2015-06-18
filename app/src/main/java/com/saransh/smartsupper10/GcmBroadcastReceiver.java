@@ -1,6 +1,5 @@
 package com.saransh.smartsupper10;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +12,5 @@ public class GcmBroadcastReceiver extends WakefulBroadcastReceiver {
 		ComponentName comp = new ComponentName(context.getPackageName(),
 				GCMNotificationIntentService.class.getName());
 		startWakefulService(context, (intent.setComponent(comp)));
-		setResultCode(Activity.RESULT_OK);
 	}
 }

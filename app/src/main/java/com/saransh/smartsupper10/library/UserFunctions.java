@@ -7,6 +7,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -21,8 +22,8 @@ public class UserFunctions {
     private static String registerURL = "http://10.0.2.2/vnb/android/user_activity.php";
     private static String noticesURL = "http://10.0.2.2/vnb/android/get_data.php";*/
     private static String insertURL = "http://10.0.2.2/smartsupper/insert_gcm.php";
-    private static String loginURL = "http://dcetech.com/sagnik/vnb/android/user_activity.php";
-    private static String registerURL = "ec2-52-26-3-72.us-west-2.compute.amazonaws.com/smartsupper/register.php";
+    private static String foodDetailsURL = "http://ec2-52-26-3-72.us-west-2.compute.amazonaws.com/smartsupper/food_detail.php";
+    private static String registerURL = "http://ec2-52-26-3-72.us-west-2.compute.amazonaws.com/smartsupper/register.php";
     private static String noticesURL = "http://dcetech.com/sagnik/vnb/android/get_data.php";
 
     private static String login_tag = "login";
@@ -71,6 +72,13 @@ public class UserFunctions {
             return true;
         }
         return false;
+    }
+    public JSONObject getfoodDetails(Context context) {
+
+
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        JSONObject json = jsonParser.getJSONFromUrl(foodDetailsURL, params);
+        return json;
     }
     public boolean logoutUser(Context context){
         DatabaseHandler db = new DatabaseHandler(context);

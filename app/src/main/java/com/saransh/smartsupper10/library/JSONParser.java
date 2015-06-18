@@ -9,6 +9,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -28,7 +29,7 @@ public class JSONParser {
 		
 	}
 	
-	public String getJSONFromUrl(String url, List<NameValuePair> params) {
+	public JSONObject getJSONFromUrl(String url, List<NameValuePair> params) {
 		
 		try {
 			
@@ -63,6 +64,11 @@ public class JSONParser {
 		} catch (Exception e) {
 			Log.e("Buffer Error", "Error Converting Result " + e.toString());
 		}
+        try {
+            			jObj = new JSONObject(json);
+            		} catch (JSONException e) {
+            			Log.e("JSON Parser", "Error parsing data " + e.toString());
+            	}
 
 		return null;
 	}

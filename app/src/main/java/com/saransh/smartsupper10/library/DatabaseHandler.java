@@ -61,8 +61,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         cursor.moveToFirst();
         if(cursor.getCount() > 0){
-            user.put("contact", cursor.getString(0));
-            user.put("address", cursor.getString(1));
+            user.put("name", cursor.getString(0));
+            user.put("contact", cursor.getString(1));
+            user.put("address", cursor.getString(2));
         }
         Log.d("contact",cursor.getString(0));
         Log.d("address",cursor.getString(1));
