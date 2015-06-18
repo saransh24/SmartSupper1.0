@@ -35,6 +35,15 @@ public class MainActivity extends Activity {
     Context context;
     String regId;
     String msg="";
+    TextView food_desc1;
+    TextView food_desc2;
+
+    TextView rate1;
+    TextView rate2;
+
+    TextView foodName1;
+    TextView foodName2;
+
     public final static String EXTRA_MESSAGE = "com.saransh.myapplication.MESSAGE";
 
 
@@ -44,6 +53,16 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        food_desc1 = (TextView)findViewById(R.id.food_desc1);
+        food_desc2 = (TextView)findViewById(R.id.food_desc2);
+
+        rate1 = (TextView)findViewById(R.id.rate_dish1);
+        rate2 = (TextView)findViewById(R.id.rate_dish2);
+
+        foodName1 = (TextView)findViewById(R.id.name_dish1);
+        foodName2 = (TextView)findViewById(R.id.name_dish2);
+
+
         setContentView(R.layout.activity_main);
 
         new SetData().execute();
@@ -52,24 +71,20 @@ public class MainActivity extends Activity {
     }
     class SetData extends AsyncTask<String, String, String> {
 
+        JSONObject jsonObject;
+        String [][]foodDetails;
         @Override
         protected String doInBackground(String... params) {
 
             UserFunctions user = new UserFunctions();
-            JSONObject jsonObject = user.getfoodDetails(getApplicationContext());
-            String [][]foodDetails = new String[2][4];
+            jsonObject = user.getfoodDetails(getApplicationContext());
 
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String params) {
             foodDetails=getdata(jsonObject);
-
-            TextView food_desc1 = (TextView)findViewById(R.id.food_desc1);
-            TextView food_desc2 = (TextView)findViewById(R.id.food_desc2);
-
-            TextView rate1 = (TextView)findViewById(R.id.rate_dish1);
-            TextView rate2 = (TextView)findViewById(R.id.rate_dish2);
-
-            TextView foodName1 = (TextView)findViewById(R.id.name_dish1);
-            TextView foodName2 = (TextView)findViewById(R.id.name_dish2);
-
             food_desc1.setText(foodDetails[0][3]);
             food_desc2.setText(foodDetails[1][3]);
 
@@ -79,16 +94,11 @@ public class MainActivity extends Activity {
             foodName1.setText(foodDetails[0][0]);
             foodName2.setText(foodDetails[1][0]);
 
+
             new DownloadImageTask((ImageView) findViewById(R.id.pic_dish1))
                     .execute(foodDetails[0][0]);
             new DownloadImageTask((ImageView) findViewById(R.id.pic_dish1))
                     .execute(foodDetails[1][1]);
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(String params) {
             Toast.makeText(getApplicationContext(),
                     params,
                     Toast.LENGTH_SHORT).show();
