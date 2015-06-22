@@ -75,9 +75,7 @@ public class UserFunctions {
     }
     public JSONObject getfoodDetails(Context context) {
 
-
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        JSONObject json = jsonParser.getJSONFromUrl(foodDetailsURL, params);
+        JSONObject json = jsonParser.getJSONFromUrl(foodDetailsURL, null);
         return json;
     }
     public boolean logoutUser(Context context){

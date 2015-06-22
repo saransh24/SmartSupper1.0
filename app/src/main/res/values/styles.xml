@@ -1,13 +1,12 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="ThemeOverlay.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#ff1d79b1</item>
         <item name="colorPrimaryDark">#ff084d95</item>
     </style>
-        <!--<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-
-        </style>-->
-
+    <style name="ActivityDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/gradient_box</item>
+    </style>
 </resources>

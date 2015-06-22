@@ -1,6 +1,7 @@
 package com.saransh.smartsupper10;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,7 +18,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.saransh.smartsupper10.library.UserFunctions;
@@ -35,11 +35,18 @@ public class MainActivity extends Activity {
     Context context;
     String regId;
     String msg="";
-    TextView food_desc1;
-    TextView food_desc2;
+
+    String [][]foodDetails;
 
     TextView rate1;
     TextView rate2;
+
+    TextView count_dish1;
+    TextView count_dish2;
+    TextView total;
+
+    TextView food_desc1;
+    TextView food_desc2;
 
     TextView foodName1;
     TextView foodName2;
@@ -62,6 +69,13 @@ public class MainActivity extends Activity {
 
         foodName1 = (TextView)findViewById(R.id.name_dish1);
         foodName2 = (TextView)findViewById(R.id.name_dish2);
+
+        count_dish1 = (TextView)findViewById(R.id.count_dish1);
+        count_dish2 = (TextView)findViewById(R.id.count_dish2);
+        total = (TextView)findViewById(R.id.total);
+
+        foodDetails = new String[2][4];
+
         new SetData().execute();
         new AttemptRegister().execute();
 
@@ -69,7 +83,18 @@ public class MainActivity extends Activity {
     class SetData extends AsyncTask<String, String, String> {
 
         JSONObject jsonObject;
-        String [][]foodDetails;
+        ProgressDialog pDialog;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(MainActivity.this,R.style.ActivityDialog);
+            pDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            pDialog.setMessage("Loading Engine ...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
         @Override
         protected String doInBackground(String... params) {
 
@@ -81,7 +106,30 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(String params) {
-            foodDetails=getdata(jsonObject);
+
+            pDialog.dismiss();
+
+            try {
+                JSONArray jsonArray = jsonObject.getJSONArray("data");
+                JSONObject jsonObject1;
+
+                for(int i=0;i<2;i++)
+                {
+                    jsonObject1 = jsonArray.getJSONObject(i);
+                    //Log.e("jsonMessage", jsonArray.getJSONObject(i).getString("foodName"));
+                    foodDetails[i][0] = jsonObject1.getString("foodName");
+                    foodDetails[i][1] = jsonObject1.getString("picLink");
+                    foodDetails[i][2] = jsonObject1.getString("Rate");
+                    foodDetails[i][3] = jsonObject1.getString("foodDesc");
+                }
+                Log.e("try", foodDetails[0][0]);
+            }
+            catch (Exception e)
+            {
+                Log.e("catch", e.toString());
+                e.printStackTrace();
+            }
+
             food_desc1.setText(foodDetails[0][3]);
             food_desc2.setText(foodDetails[1][3]);
 
@@ -93,19 +141,33 @@ public class MainActivity extends Activity {
 
 
             new DownloadImageTask((ImageView) findViewById(R.id.pic_dish1))
-                    .execute(foodDetails[0][0]);
-            new DownloadImageTask((ImageView) findViewById(R.id.pic_dish1))
+                    .execute(foodDetails[0][1]);
+            new DownloadImageTask((ImageView) findViewById(R.id.pic_dish2))
                     .execute(foodDetails[1][1]);
-            Toast.makeText(getApplicationContext(),
-                    params,
-                    Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(),
+                    //params,
+                    //Toast.LENGTH_SHORT).show();
         }
     }
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
+        ProgressDialog pDialog;
 
         public DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;
+        }
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(MainActivity.this,R.style.ActivityDialog);
+            pDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            pDialog.setTitle("SmartSupper");
+            pDialog.setMessage("Locating Tastiest Dishes Around You ...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+
         }
 
         protected Bitmap doInBackground(String... urls) {
@@ -116,16 +178,35 @@ public class MainActivity extends Activity {
                 mIcon11 = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
-                e.printStackTrace();
+                //e.printStackTrace();
             }
             return mIcon11;
         }
 
         protected void onPostExecute(Bitmap result) {
+
+            pDialog.dismiss();
             bmImage.setImageBitmap(result);
+
         }
     }
     class AttemptRegister extends AsyncTask<String, String, String> {
+
+        ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(MainActivity.this,R.style.ActivityDialog);
+            pDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+            pDialog.setTitle("SmartSupper");
+            pDialog.setMessage("Finishing Up ...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+
+
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -151,106 +232,89 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(String params) {
-            Toast.makeText(getApplicationContext(),
+            pDialog.dismiss();
+            /*Toast.makeText(getApplicationContext(),
                     params,
-                    Toast.LENGTH_SHORT).show();
+                    Toast.LENGTH_SHORT).show();*/
         }
-    }
-    String [][] getdata(JSONObject jsonObject)
-    {
-        try {
-            String Data[][] = new String[2][4];
-            JSONArray jsonArray = jsonObject.getJSONArray("data");
-            for(int i=0;i<2;i++)
-            {
-                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-                Data[i][0] = jsonObject1.getString("foodName");
-                Data[i][1] = jsonObject1.getString("picLink'");
-                Data[i][2] = jsonObject1.getString("Rate");
-                Data[i][3] = jsonObject1.getString("foodDesc");
-            }
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
+    }  
     public void b_add1(View view)
     {
-        TextView textView1 = (TextView)findViewById(R.id.count_dish1);
-        TextView textView2 = (TextView)findViewById(R.id.rate_dish1);
-        TextView textView3 = (TextView)findViewById(R.id.total);
         LinearLayout linearLayout = (LinearLayout)findViewById(R.id.total_panel);
+
         int visiblity = linearLayout.getVisibility();
 
         if(visiblity==View.GONE)
         {
             linearLayout.setVisibility(View.VISIBLE);
         }
-
-        int n = Integer.parseInt(String.valueOf(textView1.getText()));
-        int rate = Integer.parseInt(String.valueOf(textView2.getText()));
-        int total = rate+Integer.parseInt(String.valueOf(textView3.getText()));
-
-        textView1.setText(String.valueOf(n+1));
-        textView3.setText(String.valueOf(total));
+        int n = Integer.parseInt(String.valueOf(count_dish1.getText()));
+        int rate = Integer.parseInt(String.valueOf(rate1.getText()));
+        int Total;
+        Total = rate+Integer.parseInt(String.valueOf(total.getText()));
+        count_dish1.setText(String.valueOf(n+1));
+        total.setText(String.valueOf(Total));
 
     }
     public void b_add2(View view)
     {
-
-        TextView textView1 = (TextView)findViewById(R.id.count_dish2);
-        TextView textView2 = (TextView)findViewById(R.id.rate_dish2);
-        TextView textView3 = (TextView)findViewById(R.id.total);
         LinearLayout linearLayout = (LinearLayout)findViewById(R.id.total_panel);
+
         int visiblity = linearLayout.getVisibility();
 
         if(visiblity==View.GONE)
         {
             linearLayout.setVisibility(View.VISIBLE);
         }
-        int n = Integer.parseInt(String.valueOf(textView1.getText()));
-        int rate = Integer.parseInt(String.valueOf(textView2.getText()));
-        int total = rate+Integer.parseInt(String.valueOf(textView3.getText()));
-
-        textView1.setText(String.valueOf(n+1));
-        textView3.setText(String.valueOf(total));
+        int n = Integer.parseInt(String.valueOf(count_dish2.getText()));
+        int rate = Integer.parseInt(String.valueOf(rate2.getText()));
+        int Total;
+        Total = rate+Integer.parseInt(String.valueOf(total.getText()));
+        count_dish2.setText(String.valueOf(n+1));
+        total.setText(String.valueOf(Total));
     }
     public void b_sub1(View view)
     {
-        TextView textView1 = (TextView)findViewById(R.id.count_dish1);
-        TextView textView2 = (TextView)findViewById(R.id.rate_dish1);
-        TextView textView3 = (TextView)findViewById(R.id.total);
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.total_panel);
 
-        int rate = Integer.parseInt(String.valueOf(textView2.getText()));
-        int total = Integer.parseInt(String.valueOf(textView3.getText()));
 
-        int n = Integer.parseInt(String.valueOf(textView1.getText()));
+        int rate = Integer.parseInt(String.valueOf(rate1.getText()));
+        int Total = Integer.parseInt(String.valueOf(total.getText()));
+        int n = Integer.parseInt(String.valueOf(count_dish1.getText()));
         if(n>0) {
-            textView1.setText(String.valueOf(n - 1));
-            if (total > 0)
-                textView3.setText(String.valueOf(total - rate));
+            count_dish1.setText(String.valueOf(n - 1));
+            if (Total > 0) {
+                Total=Total-rate;
+                total.setText(String.valueOf(Total));
+            }
+        }
+
+        if(Total<=0)
+        {
+            linearLayout.setVisibility(View.GONE);
         }
 
     }
     public void b_sub2(View view)
     {
+        LinearLayout linearLayout = (LinearLayout)findViewById(R.id.total_panel);
 
-        TextView textView1 = (TextView)findViewById(R.id.count_dish2);
-        TextView textView2 = (TextView)findViewById(R.id.rate_dish2);
-        TextView textView3 = (TextView)findViewById(R.id.total);
 
-        int rate = Integer.parseInt(String.valueOf(textView2.getText()));
-        int total = Integer.parseInt(String.valueOf(textView3.getText()));
-
-        int n = Integer.parseInt(String.valueOf(textView1.getText()));
+        int rate = Integer.parseInt(String.valueOf(rate2.getText()));
+        int Total = Integer.parseInt(String.valueOf(total.getText()));
+        int n = Integer.parseInt(String.valueOf(count_dish2.getText()));
         if(n>0) {
-            textView1.setText(String.valueOf(n - 1));
-            if(total>0)
-                textView3.setText(String.valueOf(total-rate));
+            count_dish2.setText(String.valueOf(n - 1));
+            if (Total > 0)
+            {
+                Total=Total-rate;
+                total.setText(String.valueOf(Total));
+            }
+
+        }
+        if(Total<=0)
+        {
+            linearLayout.setVisibility(View.GONE);
         }
 
     }
@@ -272,14 +336,14 @@ public class MainActivity extends Activity {
         int visiblity = textView.getVisibility();
         if(visiblity == view.VISIBLE) {
             textView.setVisibility(View.GONE);
-            image.startAnimation(animationFadeOut);
-            animationFadeOut.setFillAfter(true);
+            image.startAnimation(animationFadeIn);
+            animationFadeIn.setFillAfter(true);
 
         }
         else if(visiblity == view.GONE) {
             textView.setVisibility(View.VISIBLE);
-            image.startAnimation(animationFadeIn);
-            animationFadeIn.setFillAfter(true);
+            image.startAnimation(animationFadeOut);
+            animationFadeOut.setFillAfter(true);
         }
     }
     public void picClick2(View view)
@@ -290,12 +354,12 @@ public class MainActivity extends Activity {
         int visiblity = textView.getVisibility();
         if(visiblity == view.VISIBLE) {
             textView.setVisibility(View.GONE);
-            image.startAnimation(animationFadeOut);
+            image.startAnimation(animationFadeIn);
             animationFadeOut.setFillAfter(true);
         }
         else if(visiblity == view.GONE) {
             textView.setVisibility(View.VISIBLE);
-            image.startAnimation(animationFadeIn);
+            image.startAnimation(animationFadeOut);
             animationFadeIn.setFillAfter(true);
         }
     }

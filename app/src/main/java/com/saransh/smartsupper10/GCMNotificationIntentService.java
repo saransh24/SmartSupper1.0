@@ -83,7 +83,7 @@ public class GCMNotificationIntentService extends IntentService {
         long[] vibrate = { 0, 100, 200, 300 };
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                this).setSmallIcon(R.drawable.logo)
+                this).setSmallIcon(R.drawable.ic_logo)
                 .setContentTitle(name)
                 .setStyle(new NotificationCompat.BigTextStyle().bigText(desc))
                 .setContentText(desc)

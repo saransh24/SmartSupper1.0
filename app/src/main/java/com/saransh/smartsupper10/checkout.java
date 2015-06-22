@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,10 @@ public class checkout extends Activity {
     TextView contact;
     TextView address;
 
+    EditText editText_name;
+    EditText editText_address;
+    EditText editText_contact;
+
     Context context;
 
     DatabaseHandler db;
@@ -37,10 +42,15 @@ public class checkout extends Activity {
         Intent intent = getIntent();
         intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
         TextView textView = (TextView)findViewById(R.id.total);
+
+        editText_name = (EditText)findViewById(R.id.editText_name);
+        editText_address = (EditText)findViewById(R.id.editText_address);
+        editText_contact = (EditText)findViewById(R.id.editText_contact);
+
         textView.setText(intent.getStringExtra(MainActivity.EXTRA_MESSAGE));
-        name = (TextView) findViewById(R.id.Name);
-        contact = (TextView) findViewById(R.id.contactno);
-        address = (TextView) findViewById(R.id.address);
+        name = (TextView) findViewById(R.id.editText_name);
+        contact = (TextView) findViewById(R.id.editText_contact);
+        address = (TextView) findViewById(R.id.editText_address);
         db = new DatabaseHandler(getApplicationContext());
         int count = db.getRowCount();
 
@@ -55,6 +65,23 @@ public class checkout extends Activity {
 
     public void b_order(View view)
     {
+
+        final String EditName = editText_name.getText().toString();
+        final String EditAddress = editText_address.getText().toString();
+        final String EditContact = editText_contact.getText().toString();
+
+        if(EditName==null)
+        {
+            editText_name.setError("this field is required");
+        }
+        if(EditAddress==null)
+        {
+            editText_address.setError("this field is required");
+        }
+        if(EditContact==null)
+        {
+            editText_contact.setError("this field is required");
+        }
         int count = db.getRowCount();
         if(count>0)
         {
